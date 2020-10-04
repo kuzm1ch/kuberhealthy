@@ -3,11 +3,14 @@
 # Declare variables to be passed into your templates.
 
 prometheus:
-  enabled: false
+  enabled: true
   name: "prometheus"
   release: prometheus-operator
-  serviceMonitor: false
   enableAlerting: false
+  operator:
+    enabled: true
+    serviceMonitor: true
+    enableAlerting: true
 
 image:
   repository: kuberhealthy/kuberhealthy

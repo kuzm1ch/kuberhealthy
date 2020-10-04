@@ -1,4 +1,5 @@
 {{- if .Values.prometheus.enabled -}}
+{{- if .Values.prometheus.operator.enabled -}}
 {{- if .Values.prometheus.serviceMonitor -}}
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -24,4 +25,4 @@ spec:
     bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
 {{- end -}}
 {{- end -}}
-
+{{- end -}}

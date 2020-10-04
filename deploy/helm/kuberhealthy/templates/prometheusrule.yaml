@@ -1,0 +1,34 @@
+{{- if .Values.prometheus.enabled -}}
+{{- if .Values.prometheus.operator.enabled -}}
+{{- if .Values.prometheus.operator.enableAlerting -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: {{ template "kuberhealthy.name" . }}
+    prometheus: {{ .Values.prometheus.name }}
+    release: {{ .Values.prometheus.release }}
+    role: alert-rules
+  name: {{ template "kuberhealthy.name" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+  - name: ./kuberhealthy.rules
+    rules:
+    - alert: KuberhealthyError
+      expr: kuberhealthy_running < 1
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        description: Kuberhealthy is not healthy
+    - alert: ClusterUnhealthy
+      expr: kuberhealthy_cluster_state < 1
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        description: Kuberhealthy shows that the cluster is not healthy
+{{- end -}}
+{{- end -}}
+{{- end -}}
